@@ -2,8 +2,16 @@ version: '3'
 services:
         backend:
                 build:  ./src/backend
+                command: python ./hackernews/manage.py runserver 0.0.0.0:8000
                 ports:
                         - "8000:8000"
                 volumes: 
                         - ./src/backend:/usr/src/app
                 tty: true
+                depends_on:
+                        - postgres
+        postgres:
+                image: postgres
+                restart: always
+                volumes:
+                        - ./postgres-data:/var/lib/postgresql/data
