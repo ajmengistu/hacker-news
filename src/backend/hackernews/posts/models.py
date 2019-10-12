@@ -5,7 +5,7 @@ class Post(models.Model):
     description = models.TextField()
     posted_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     votes = models.IntegerField()
-    created_date = models.DateField()
+    created_date = models.DateTimeField()
 # from django.db import models
 # from django.conf import settings
 # # Create your models here.
