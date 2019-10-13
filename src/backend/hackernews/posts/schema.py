@@ -1,6 +1,6 @@
 import graphene
 from graphene_django import DjangoObjectType
-import users.schema 
+from users.schema import UserType
 from datetime import datetime
 
 from .models import Post
@@ -21,19 +21,24 @@ class CreatePost(graphene.Mutation):
     id = graphene.Int()
     url = graphene.String()
     description = graphene.String()
-    posted_by = graphene.Field(users.schema.UserType)
+    posted_by = graphene.Field(UserType)
     votes = graphene.Int()
     created_date = graphene.DateTime()
 
     class Arguments:
         url = graphene.String()
         description = graphene.String()
-        posted_by = graphene.Int()
-        votes = graphene.Int()
-        # created_date = graphene.DateTime()
 
-    def mutate(self, info, url, description, posted_by, votes):
-        post = Post(url=url, description=description, posted_by=posted_by, votes=votes, created_date=datetime.now())
+    def mutate(self, info, url, description):
+        user = info.context.user or None
+
+        post = Post(
+            url=url, 
+            description=description,
+            posted_by=user,
+            votes=0,
+            created_date=datetime.now(),
+        )        
         post.save()
 
         return CreatePost(
