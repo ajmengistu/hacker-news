@@ -50,5 +50,28 @@ class CreatePost(graphene.Mutation):
             created_date=post.created_date
         )
 
+class UpdateVote(graphene.Mutation):
+    post = graphene.Field(PostType)
+    user = graphene.Field(UserType)
+
+    class Arguments:
+        post_id = graphene.Int()
+    
+    def mutate(self, info, post_id):
+        user = info.context.user
+        if user.is_anonymous:
+            raise Exception('You must be logged to vote!')
+        
+        post = Post.objects.filter(id=post_id).first()
+        if not post:
+            raise Exception('Invalid Post!')
+        
+        post.votes += 1
+        post.save()
+
+        return UpdateVote(user=user, post=post)
+
+
 class Mutation(graphene.ObjectType):
     create_post = CreatePost.Field()
+    update_vote = UpdateVote.Field()
