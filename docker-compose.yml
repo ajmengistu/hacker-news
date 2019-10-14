@@ -10,16 +10,17 @@ services:
                 tty: true
                 depends_on:
                         - postgres
-        frontend:
-                build: ./src/frontend
-                command: bash -c "cd ./hackernews-react-apollo/ && npm start"
-                ports:
-                        - "3000:3000"
-                volumes:
-                        - ./src/frontend:/usr/src/app
-                tty: true
-                depends_on: 
-                        - backend
+        # frontend:
+        #         build: ./src/frontend
+        #         command: bash -c "cd ./hackernews-react-apollo/ && npm start"
+        #         ports:
+        #                 - "3000:3000"
+        #                 - "35729:35729"
+        #         volumes:
+        #                 - ./src/frontend:/usr/src/app
+        #         tty: true
+        #         depends_on: 
+        #                 - backend
         postgres:
                 image: postgres
                 volumes:
