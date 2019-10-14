@@ -1,27 +1,41 @@
 import React, { Component } from 'react'
 import Post from './Post'
+import { Query } from 'react-apollo'
+import gql from 'graphql-tag'
+
+const POSTS_QUERY = gql`    
+        query{
+            posts{
+                id
+                url
+                description
+                
+            }
+        }    
+`
 
 class PostList extends Component{
     render(){
-        const postsToRender = [
-            {
-                id: '1',
-                description: 'Prisma turns your database into a GraphQL API 😎',
-                url: 'https://www.prismagraphql.com',
-              },
-              {
-                id: '2',
-                description: 'The best GraphQL client',
-                url: 'https://www.apollographql.com/docs/react/',
-              },
-        ]
-
         return (
-            <div>
-                {postsToRender.map(
-                    post => <Post key={post.id} post={post} />
-                )}
-            </div>
+            <Query query={POSTS_QUERY}>
+                {({ loading, error, data}) =>{
+                    if (loading) return <div>Fetching...</div>
+                    if (error) return <div>Error</div>
+
+                    const postsToRender = data.posts 
+                    console.log(postsToRender)                 
+
+                    return (
+                        <div>
+                            {postsToRender.map(
+                                post => 
+                                    <Post key={post.id} post={post} />
+                            )}
+                        </div>
+                    )
+                }
+            }
+            </Query>
         )
     }
 }
