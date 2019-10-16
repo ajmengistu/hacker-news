@@ -8,13 +8,29 @@ import { ApolloProvider } from 'react-apollo'
 import { ApolloClient } from 'apollo-client'
 import { createHttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
+import { setContext } from 'apollo-link-context'
 
 const httpLink = createHttpLink({
-    uri: 'http://localhost:8000/graphql'
+    uri: 'http://localhost:8000/graphql',
+    // credentials:'include'
+})
+
+const authLink = setContext((_,{ headers }) => {
+    // const token = localStorage.getItem(AUTH_TOKEN)
+    const token = "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImhlbGxvIiwiZXhwIjoxNTcxMTgwNTAwLCJvcmlnSWF0IjoxNTcxMTgwMjAwfQ.dzWnK1th3JYm13I8R2RrmDBZbwbmoSCgxetHYBkkiVg"
+    const AUTH_TOKEN = ""
+    localStorage.setItem(AUTH_TOKEN, token)
+    return {
+        headers: {
+            ...headers,
+            // authorization: token ? `JWT ${token}` : '
+            authorization: localStorage.getItem(AUTH_TOKEN)
+        }
+    }
 })
 
 const client = new ApolloClient({
-    link: httpLink,
+    link: authLink.concat(httpLink),
     cache: new InMemoryCache()
 })
 
