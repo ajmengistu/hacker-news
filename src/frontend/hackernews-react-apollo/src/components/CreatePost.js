@@ -43,7 +43,10 @@ class CreatePost extends Component {
                 placeholder="The description for the link"
               />
             </div>
-           <Mutation mutation={POST_MUTATION} variables={{ url, description }}>
+           <Mutation 
+                mutation={POST_MUTATION} 
+                variables={{ url, description }} 
+                onCompleted={() => this.props.history.push('/')}>
                { postMutation => <button onClick={postMutation}>Submit</button>}
            </Mutation>            
           </div>
