@@ -1,7 +1,8 @@
 import graphene
 from graphene_django import DjangoObjectType
 from users.schema import UserType
-from datetime import datetime
+from django.utils import timezone
+import pytz
 from django.db.models import Q
 
 from .models import Post
@@ -56,13 +57,13 @@ class CreatePost(graphene.Mutation):
 
     def mutate(self, info, url, description):
         user = info.context.user or None
-
+        
         post = Post(
             url=url, 
             description=description,
             posted_by=user,
             votes=0,
-            created_date=datetime.now(),
+            created_date=timezone.now(),
         )        
         post.save()
 
