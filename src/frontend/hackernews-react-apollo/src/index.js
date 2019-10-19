@@ -10,22 +10,19 @@ import { createHttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { setContext } from 'apollo-link-context'
 import { BrowserRouter } from 'react-router-dom'
+import { AUTH_TOKEN } from './constants'
 
 const httpLink = createHttpLink({
     uri: 'http://localhost:8000/graphql',
-    // credentials:'include'
 })
 
 const authLink = setContext((_,{ headers }) => {
     // const token = localStorage.getItem(AUTH_TOKEN)
-    const token = "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImhlbGxvIiwiZXhwIjoxNTcxMTgwNTAwLCJvcmlnSWF0IjoxNTcxMTgwMjAwfQ.dzWnK1th3JYm13I8R2RrmDBZbwbmoSCgxetHYBkkiVg"
-    const AUTH_TOKEN = ""
-    // localStorage.setItem(AUTH_TOKEN, token)
+    const token = localStorage.getItem(AUTH_TOKEN)
     return {
         headers: {
             ...headers,
-            // authorization: token ? `JWT ${token}` : '
-            authorization: localStorage.getItem(AUTH_TOKEN)
+            authorization: token ? `JWT ${token}` : ''
         }
     }
 })
@@ -44,9 +41,6 @@ ReactDOM.render(
     </BrowserRouter>,
     document.getElementById('root')
 )
-
-
-
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
