@@ -30,15 +30,15 @@ class CreatePost extends Component {
             <div className="flex flex-column mt3">
               <input
                 className="mb2"
-                value={description}
-                onChange={e => this.setState({ description: e.target.value })}
+                value={url}
+                onChange={e => this.setState({ url: e.target.value })}
                 type="text"
                 placeholder="A URL for the link"
               />
               <input
                 className="mb2"
-                value={url}
-                onChange={e => this.setState({ url: e.target.value })}
+                value={description}
+                onChange={e => this.setState({ description: e.target.value })}
                 type="text"
                 placeholder="The description for the link"
               />
