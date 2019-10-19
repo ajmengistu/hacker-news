@@ -9,7 +9,12 @@ const POSTS_QUERY = gql`
                 id
                 url
                 description
-                
+                postedBy{
+                    id
+                    username                                        
+                }
+                votes
+                createdDate                
             }
         }    
 `
@@ -21,15 +26,12 @@ class PostList extends Component{
                 {({ loading, error, data}) =>{
                     if (loading) return <div>Fetching...</div>
                     if (error) return <div>Error</div>
-
                     const postsToRender = data.posts 
-                    console.log(postsToRender)                 
-
                     return (
                         <div>
                             {postsToRender.map(
-                                post => 
-                                    <Post key={post.id} post={post} />
+                                (post, index) => 
+                                    <Post key={post.id} post={post} index={index} />
                             )}
                         </div>
                     )
