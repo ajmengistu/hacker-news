@@ -1,6 +1,18 @@
 import React, { Component } from 'react'
 import { AUTH_TOKEN } from '../constants'
 import { timeDifferenceForDate} from '../utils'
+import { Mutation } from 'react-apollo'
+import gql from 'graphql-tag'
+
+const VOTE_MUTATION = gql`
+  mutation VoteMutation($postId: Int!){
+    updateVote(postId: $postId){
+      post{
+        id
+      }
+    }
+  }
+`
 
 class Post extends Component{
     render() {
@@ -10,9 +22,13 @@ class Post extends Component{
             <div className="flex items-center">
               <span className="gray">{this.props.index + 1}.</span>
               {authToken && (
-                <div className="ml1 gray f11" onClick={() => this._voteForLink()}>
-                  ▲ 
-                </div>
+                <Mutation mutation={VOTE_MUTATION} variables={{ postId: this.props.post.id }}>
+                  {mutation => (
+                    <div className="ml1 gray f11" onClick={mutation}>
+                      ▲
+                    </div>
+                  )}
+                </Mutation>
               )}
             </div>
             <div className="ml1">
@@ -21,7 +37,8 @@ class Post extends Component{
               </div>
               <div className="f6 lh-copy gray">
                 {this.props.post.votes} votes | by{' '} 
-                {this.props.post.postedBy.username} {''}
+                {this.props.post.postedBy.username ? 
+                this.props.post.postedBy.username : 'Unkown'} {''}
                 {timeDifferenceForDate(this.props.post.createdDate)}
             </div>
             </div>
