@@ -20,7 +20,7 @@ const authLink = setContext((_,{ headers }) => {
     // const token = localStorage.getItem(AUTH_TOKEN)
     const token = "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImhlbGxvIiwiZXhwIjoxNTcxMTgwNTAwLCJvcmlnSWF0IjoxNTcxMTgwMjAwfQ.dzWnK1th3JYm13I8R2RrmDBZbwbmoSCgxetHYBkkiVg"
     const AUTH_TOKEN = ""
-    localStorage.setItem(AUTH_TOKEN, token)
+    // localStorage.setItem(AUTH_TOKEN, token)
     return {
         headers: {
             ...headers,
