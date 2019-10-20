@@ -5,6 +5,7 @@ import { Switch, Route } from 'react-router-dom'
 import PostList from './PostList'
 import CreatePost from './CreatePost';
 import Login from './Login'
+import Search from './Search'
 
 class App extends Component{
   render(){
@@ -18,6 +19,7 @@ class App extends Component{
           <Route exact path="/" component={PostList} />
           <Route exact path="/create" component={CreatePost} />
           <Route exact path="/login" component={Login} />
+          <Route exact path="/search" component={Search} />
         </Switch> 
       </div>
     </div>

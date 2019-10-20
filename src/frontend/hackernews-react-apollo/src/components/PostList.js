@@ -3,7 +3,7 @@ import Post from './Post'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 
-const POSTS_QUERY = gql`    
+export const POSTS_QUERY = gql`    
         query{
             posts{
                 id

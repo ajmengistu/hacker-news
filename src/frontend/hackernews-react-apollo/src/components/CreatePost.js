@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
+import { POSTS_QUERY } from './PostList'
 
 // Submit a Post Query
 const POST_MUTATION = gql`
@@ -11,8 +12,10 @@ const POST_MUTATION = gql`
             description
             createdDate
             postedBy{
+                id
                 username
             }
+            votes
         }
     }
 `
@@ -46,7 +49,23 @@ class CreatePost extends Component {
            <Mutation 
                 mutation={POST_MUTATION} 
                 variables={{ url, description }} 
-                onCompleted={() => this.props.history.push('/')}>
+                onCompleted={() => this.props.history.push('/')}
+                // update: It allows you to update the store based on
+                // a mutation's result
+                // store: InMemoryCache
+                // createPost: the currently submitted valid Post that is returned
+                // from the POST_MUTATION (See GQL query above).
+                // OBJECTIVE: read the current state of the POSTS_QUERY.
+                // Then, insert the newst link at the beginning and write the query
+                // results back to the store.
+                update={(store, {data: { createPost }}) => {                                    
+                    const data = store.readQuery({ query: POSTS_QUERY })                                      
+                    data.posts.unshift(createPost)
+                    store.writeQuery({
+                        query: POSTS_QUERY,
+                        data
+                    })
+                }}>                
                { postMutation => <button onClick={postMutation}>Submit</button>}
            </Mutation>            
           </div>
