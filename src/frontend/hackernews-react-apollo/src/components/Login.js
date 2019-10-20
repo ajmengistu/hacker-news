@@ -83,14 +83,8 @@ class Login extends Component {
 
   _confirm = async data => {
     // const { token } = this.state.login ? data.login : data.signup
-    console.log("Confirming")
-    console.log(data)
-    
-    
-      const { token } = data.tokenAuth
-      this._saveUserData(token)
-      console.log(token)     
-    
+    const { token } = data.tokenAuth
+    this._saveUserData(token)    
     this.props.history.push(`/`)
   }
 

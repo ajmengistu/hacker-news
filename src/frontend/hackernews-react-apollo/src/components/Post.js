@@ -9,6 +9,7 @@ const VOTE_MUTATION = gql`
     updateVote(postId: $postId){
       post{
         id
+        votes
       }
     }
   }
@@ -22,7 +23,14 @@ class Post extends Component{
             <div className="flex items-center">
               <span className="gray">{this.props.index + 1}.</span>
               {authToken && (
-                <Mutation mutation={VOTE_MUTATION} variables={{ postId: this.props.post.id }}>
+                <Mutation 
+                  mutation={VOTE_MUTATION} 
+                  variables={{ postId: this.props.post.id }}
+                  // Update called directly after the server returned the response.
+                  // store: current cache                  
+                  update={(store, { data }) =>                     
+                    this.props.updateStoreAfterVote(store, data, this.props.post.id)}>
+
                   {mutation => (
                     <div className="ml1 gray f11" onClick={mutation}>
                       ▲
